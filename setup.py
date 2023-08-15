@@ -15,7 +15,7 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = fh.read()
     
 setup(
-  name = 'traffic',
+  name = 'nysdotapi',
   version = version,
   license = 'MIT',
   description = 'NYS DOT Traffic Camera Python API',
