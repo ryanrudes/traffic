@@ -1,13 +1,13 @@
 # New York State Department of Transportation API
 
-[![PyPI download month](https://img.shields.io/pypi/dm/traffic.svg)](https://pypi.python.org/pypi/traffic/)
-[![PyPI - Status](https://img.shields.io/pypi/status/traffic)](https://pypi.python.org/pypi/traffic/)
-[![PyPI](https://img.shields.io/pypi/v/traffic)](https://pypi.python.org/pypi/traffic/)
+[![PyPI download month](https://img.shields.io/pypi/dm/nysdotapi.svg)](https://pypi.python.org/pypi/nysdotapi/)
+[![PyPI - Status](https://img.shields.io/pypi/status/nysdotapi)](https://pypi.python.org/pypi/nysdotapi/)
+[![PyPI](https://img.shields.io/pypi/v/nysdotapi)](https://pypi.python.org/pypi/nysdotapi/)
 ![GitHub](https://img.shields.io/github/license/ryanrudes/traffic)
 
 ## Installation
 ```bash
-pip install traffic
+pip install nysdotapi
 ```
 
 ## Authentication
