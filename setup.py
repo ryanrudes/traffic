@@ -1,14 +1,13 @@
 from setuptools import setup
 
-import datetime
 import codecs
 import os
 
-major = 0
-minor = 1
+major = 1
+minor = 0
+patch = 0
 
-timestamp = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
-version = f"{major}.{minor}.{timestamp}"
+version = f"{major}.{minor}.{patch}"
 
 here = os.path.abspath(os.path.dirname(__file__))
 
