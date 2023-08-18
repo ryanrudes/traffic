@@ -16,63 +16,27 @@ import cv2
 import re
 import os
 
+STREAM_EXPR = re.compile(r"#EXT-X-STREAM-INF:BANDWIDTH=(\d+)(?:,CODECS=\"(.*?)\")?(?:,RESOLUTION=(\d+)x(\d+))?")
 VERSION_EXPR = re.compile(r"#EXT-X-VERSION:(\d)")
-STREAM1_EXPR = re.compile(r"#EXT-X-STREAM-INF:BANDWIDTH=(\d+),CODECS=\"(.*)\",RESOLUTION=(\d+)x(\d+)")
-STREAM2_EXPR = re.compile(r"#EXT-X-STREAM-INF:BANDWIDTH=(\d+),CODECS=\"(.*)\"")
-STREAM3_EXPR = re.compile(r"#EXT-X-STREAM-INF:BANDWIDTH=(\d+)")
 DURATION_EXPR = re.compile(r"#EXTINF:(\d+.\d+),")
 
 def get_info(playlist_url):
-    try:
-        response = requests.get(playlist_url, timeout = 0.1)
-    except KeyboardInterrupt as e:
-        raise e
-    except:
-        return dict(version = None, bandwidth = None, codec = None, width = None, height = None, path = None)
-    
-    if response.status_code == 401:
-        return dict(version = None, bandwidth = None, codec = None, width = None, height = None, path = None)
-    
+    response = requests.get(playlist_url, timeout = 0.1)
     content = response.content.decode().strip().split('\n')
     
     version = int(re.search(VERSION_EXPR, content[1]).group(1))
-    results = re.search(STREAM1_EXPR, content[2])
-    omits_resolution = results is None
+    results = re.search(STREAM_EXPR, content[2])
     
-    if omits_resolution:
-        results = re.search(STREAM2_EXPR, content[2])
-        width = None
-        height = None
-    else:
-        width = int(results.group(3))
-        height = int(results.group(4))
-        
-    omits_codec = results is None
-    
-    if omits_codec:
-        results = re.search(STREAM3_EXPR, content[2])
-        codec = None
-    else:
-        codec = results.group(2)
-        
     bandwidth = int(results.group(1))
-    
+    codec = results.group(2)
+    width = int(results.group(3))
+    height = int(results.group(4))
     path = content[3]
 
-    return dict(version = version, bandwidth = bandwidth, codec = codec, width = width, height = height, path = path)
+    return version, bandwidth, codec, width, height, path
 
 def get_blocks(playlist_url):
-    x = get_info(playlist_url)
-    
-    version = x["version"]
-    bandwidth = x["bandwidth"]
-    codec = x["codec"]
-    width = x["width"]
-    height = x["height"]
-    path = x["path"]
-    
-    if path is None:
-        return None, None, []
+    version, bandwidth, codec, width, height, path = get_info(playlist_url)
     
     url = playlist_url[:-13] + path
     response = requests.get(url)
