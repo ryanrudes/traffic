@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, "..")
+
 from traffic import API
 
 import random
@@ -14,10 +17,12 @@ while True:
     
     try:
         with camera.get_stream() as stream:
+            title = "LIVE: " + camera.roadway if camera.roadway else "LIVE"
+                
             for i in range(100):
                 frame = next(stream)
                 
-                cv2.imshow("LIVE: " + camera.roadway, frame)
+                cv2.imshow(title, frame)
                 cv2.waitKey(1)
                 
             cv2.destroyAllWindows()
